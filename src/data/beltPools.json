@@ -1,0 +1,8 @@
+[
+  {
+    "name": "beltv2-belt-bnb",
+    "poolId": 11,
+    "oracle": "lps",
+    "oracleId": "cakev2-belt-bnb"
+  }
+]

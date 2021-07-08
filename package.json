@@ -1,7 +1,7 @@
 {
-  "name": "beefy-api",
+  "name": "joe-api",
   "version": "1.0.0",
-  "repository": "beefyfinance/beefy-api",
+  "repository": "traderjoe-xyz/joe-api",
   "license": "MIT",
   "scripts": {
     "start": "ts-node src/app.ts",
@@ -9,8 +9,7 @@
     "test": "nyc ava",
     "prettier:check": "prettier --check src/**/*",
     "prettier:fix": "prettier --write src/**/*",
-    "prepare": "husky install",
-    "bsc:pancake:farm:add": "node scripts/bscPancakeFarmAdd.js"
+    "prepare": "husky install"
   },
   "dependencies": {
     "@koa/cors": "^3.1.0",

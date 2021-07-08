@@ -28,4 +28,4 @@ app.use(router.allowedMethods());
 
 const port = process.env.PORT || 3000;
 app.listen(port);
-console.log(`> beefy-api running! (:${port})`);
+console.log(`> joe-api running! (:${port})`);

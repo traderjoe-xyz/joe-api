@@ -17,7 +17,8 @@ yarn start
 
 ---
 
-#### **/supply**: Used by [Coingecko](https://coingecko.com) to display Joe's total supply and circulating supply
+#### **/supply/total**: Used by [Coingecko](https://coingecko.com) to display Joe's circulating supply.
+#### **/supply/circulating**: Used by [Coingecko](https://coingecko.com) to display Joe's total supply.
 
 ---
 ---

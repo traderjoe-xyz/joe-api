@@ -1,16 +1,15 @@
 {
   "name": "joe-api",
   "version": "1.0.0",
-  "repository": "traderjoe-xyz/joe-api",
-  "license": "MIT",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "ts-node src/app.ts",
-    "dev": "nodemon -e js,ts,json src/app.ts",
-    "test": "nyc ava",
-    "prettier:check": "prettier --check src/**/*",
-    "prettier:fix": "prettier --write src/**/*",
-    "prepare": "husky install"
+    "test": "echo \"Error: no test specified\" && exit 1",
+	"start": "node index.js"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
     "@koa/cors": "^3.1.0",
     "@koa/router": "^9.4.0",

@@ -11,21 +11,21 @@ const rt = require('./middleware/rt');
 const powered = require('./middleware/powered');
 const router = require('./router');
 
-const app = new Koa();
+const index = new Koa();
 
-app.use(rt);
-app.use(conditional());
-app.use(etag());
-app.use(helmet());
-app.use(cors({ origin: '*' }));
-app.use(powered);
-app.use(body());
+index.use(rt);
+index.use(conditional());
+index.use(etag());
+index.use(helmet());
+index.use(cors({ origin: '*' }));
+index.use(powered);
+index.use(body());
 
-app.context.cache = {};
+index.context.cache = {};
 
-app.use(router.routes());
-app.use(router.allowedMethods());
+index.use(router.routes());
+index.use(router.allowedMethods());
 
 const port = process.env.PORT || 3000;
-app.listen(port);
+index.listen(port);
 console.log(`> joe-api running! (:${port})`);

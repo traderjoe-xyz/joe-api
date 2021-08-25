@@ -8,6 +8,7 @@ const supply = require('./api/supply');
 
 router.get('/supply/circulating', supply.circulatingSupply);
 router.get('/supply/total', supply.totalSupply);
+router.get('/supply/max', supply.maxSupply);
 router.get('/', noop);
 
 module.exports = router;

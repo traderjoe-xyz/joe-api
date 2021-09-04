@@ -9,8 +9,7 @@ function getInfos(ctx) {
             "external_url": "https://api.traderjoexyz.com/nft/hat/" + ctx.params.id,
             "name": "Joe Hat NFT #" + ctx.params.id,
             "description": "Redeemed a real HAT and burned 1 $HAT",
-            "image": "https://bafybeifvjx7u2zidkkt27njgtky5hfrsjnh5dhj6uy4io4imo2nrej6b6y.ipfs.dweb.link/?filename=logo.png",
-            "ips": "https://bafybeifvjx7u2zidkkt27njgtky5hfrsjnh5dhj6uy4io4imo2nrej6b6y.ipfs.dweb.link/?filename=logo.png"
+            "image": "https://ipfs.io/ipfs/QmaYPV2VKW5vHtD92m8h9Q4YFiukFx2fBWPAfCWKg6513s"
         }
     }
 }

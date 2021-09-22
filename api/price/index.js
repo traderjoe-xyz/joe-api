@@ -104,7 +104,10 @@ async function priceOfToken(ctx) {
     else {
         try {
             const tokenAddress = web3.utils.toChecksumAddress(ctx.params.tokenAddress)
-            ctx.body = (await getPrice(tokenAddress)).toString()
+
+            tokenAddress === wavaxTokenAddress ?
+                ctx.body = (await getAvaxPrice()).toString() :
+                ctx.body = (await getPrice(tokenAddress)).toString()
         } catch (e) {
             ctx.body = e.toString()
         }
@@ -117,7 +120,9 @@ async function derivedPriceOfToken(ctx) {
     else {
         try {
             const tokenAddress = web3.utils.toChecksumAddress(ctx.params.tokenAddress)
-            ctx.body = (await getDerivedPrice(tokenAddress)).toString()
+            tokenAddress === wavaxTokenAddress ?
+                ctx.body = E18.toString() :
+                ctx.body = (await getDerivedPrice(tokenAddress)).toString()
         } catch (e) {
             ctx.body = e.toString()
         }

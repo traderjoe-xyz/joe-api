@@ -1,13 +1,13 @@
 'use strict';
 
 const {web3Factory} = require("../../utils/web3");
-const JoeContactABI = require('../../abis/JoeContactABI.json');
+const ERC20ContractABI = require('../../abis/ERC20ContractABI.json');
 const {AVAX_CHAIN_ID} = require("../../constants");
 const joeTokenAddress = "0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd"
 const BN = require('bn.js');
 
 const web3 = web3Factory(AVAX_CHAIN_ID);
-const joeContract = new web3.eth.Contract(JoeContactABI, joeTokenAddress);
+const joeContract = new web3.eth.Contract(ERC20ContractABI, joeTokenAddress);
 
 
 async function getTotalSupply() {

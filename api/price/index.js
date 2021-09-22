@@ -112,7 +112,9 @@ async function priceOfToken(ctx) {
             }
         } catch (e) {
             ctx.body = e.toString()
+            return
         }
+
         tokenAddress === wavaxTokenAddress ?
             ctx.body = (await getAvaxPrice()).toString() :
             ctx.body = (await getPrice(tokenAddress)).toString()
@@ -132,7 +134,9 @@ async function derivedPriceOfToken(ctx) {
             }
         } catch (e) {
             ctx.body = e.toString()
+            return
         }
+
         tokenAddress === wavaxTokenAddress ?
             ctx.body = E18.toString() :
             ctx.body = (await getDerivedPrice(tokenAddress)).toString()

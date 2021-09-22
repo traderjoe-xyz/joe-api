@@ -104,6 +104,7 @@ async function priceOfToken(ctx) {
     if (!("tokenAddress" in ctx.params))
         ctx.body = ""
     else {
+        const tokenList = require('../../../loopedEvents/tokenList.json')
         try {
             if (ctx.params.tokenAddress in tokenList) {
                 tokenAddress = tokenList[ctx.params.tokenAddress]
@@ -124,6 +125,7 @@ async function derivedPriceOfToken(ctx) {
     if (!("tokenAddress" in ctx.params))
         ctx.body = ""
     else {
+        const tokenList = require('../../../loopedEvents/tokenList.json')
         try {
             if (ctx.params.tokenAddress in tokenList) {
                 tokenAddress = tokenList[ctx.params.tokenAddress]

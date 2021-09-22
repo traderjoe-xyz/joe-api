@@ -20,7 +20,6 @@ const usdteTokenAddress = "0xc7198437980c041c805A1EDcbA50c1Ce5db95118"
 const wavaxUsdtePair = "0xeD8CBD9F0cE3C6986b22002F03c6475CEb7a6256"
 const wavaxUsdcePair = "0xA389f9430876455C36478DeEa9769B7Ca4E3DDB1"
 
-
 // contracts
 const usdceContract = getContractAsERC20(usdceTokenAddress);
 const usdteContract = getContractAsERC20(usdteTokenAddress);
@@ -32,7 +31,7 @@ const E18 = new BN("10").pow(new BN("18"))
 const EIGHTEEN = new BN("18")
 const TWO = new BN("2")
 
-async function getContractAsERC20(tokenAddress) {
+function getContractAsERC20(tokenAddress) {
     return new web3.eth.Contract(ERC20ContractABI, tokenAddress)
 }
 
@@ -78,7 +77,7 @@ async function getPrice(tokenAddress) {
 
 async function getDerivedPrice(tokenAddress) {
     const pairAddress = await getPairAddress(tokenAddress)
-    const tokenContract = await getContractAsERC20(tokenAddress)
+    const tokenContract = getContractAsERC20(tokenAddress)
     const derivedPrice = await getDerivedPriceOfPair(wavaxContract, tokenContract, pairAddress, false)
     return new BN(derivedPrice)
 }

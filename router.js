@@ -13,8 +13,8 @@ router.get('/supply/total', supply.totalSupply);
 router.get('/supply/max', supply.maxSupply);
 router.get('/nft/hat', nftHat.infos);
 router.get('/nft/hat/:id', nftHat.infos)
-router.get('/price/avax', price.avaxPrice)
-router.get('/price/joe', price.joePrice)
+router.get('/priceavax/:tokenAddress', price.derivedPriceOfToken)
+router.get('/priceusd/:tokenAddress', price.priceOfToken)
 router.get('/', noop);
 
 module.exports = router;

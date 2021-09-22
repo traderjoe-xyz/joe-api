@@ -110,14 +110,14 @@ async function priceOfToken(ctx) {
             } else {
                 tokenAddress = web3.utils.toChecksumAddress(ctx.params.tokenAddress)
             }
+
+            tokenAddress === wavaxTokenAddress ?
+                ctx.body = (await getAvaxPrice()).toString() :
+                ctx.body = (await getPrice(tokenAddress)).toString()
         } catch (e) {
             ctx.body = e.toString()
             return
         }
-
-        tokenAddress === wavaxTokenAddress ?
-            ctx.body = (await getAvaxPrice()).toString() :
-            ctx.body = (await getPrice(tokenAddress)).toString()
     }
 }
 
@@ -132,14 +132,14 @@ async function derivedPriceOfToken(ctx) {
             } else {
                 tokenAddress = web3.utils.toChecksumAddress(ctx.params.tokenAddress)
             }
+
+            tokenAddress === wavaxTokenAddress ?
+                ctx.body = E18.toString() :
+                ctx.body = (await getDerivedPrice(tokenAddress)).toString()
         } catch (e) {
             ctx.body = e.toString()
             return
         }
-
-        tokenAddress === wavaxTokenAddress ?
-            ctx.body = E18.toString() :
-            ctx.body = (await getDerivedPrice(tokenAddress)).toString()
     }
 }
 

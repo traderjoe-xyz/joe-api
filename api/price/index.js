@@ -80,10 +80,20 @@ async function getDerivedPrice(tokenAddress) {
     const results = await Promise.all([
         getContractAsERC20(tokenAddress),
         await getPairAddress(tokenAddress)
-
     ])
-    if (results[1] === "0x0000000000000000000000000000000000000000")
-        throw 'Error: Given address "' + tokenAddress + '" isn\'t paired with WAVAX on TraderJoe.'
+
+    if (results[1] === "0x0000000000000000000000000000000000000000") {
+        let symbol;
+        try {
+            symbol = await results[0].methods.symbol().call()
+            throw 'Error: There is no ' + symbol + '/WAVAX pair on TraderJoe.'
+        } catch (e) {
+            if (e === 'Error: There is no ' + symbol + '/WAVAX pair on TraderJoe.')
+                throw e
+            else
+                throw 'Error: Given address "' + tokenAddress + '" isn\'t paired with WAVAX on TraderJoe.'
+        }
+    }
     const derivedPrice = await getDerivedPriceOfPair(wavaxContract, results[0], results[1], false)
     return new BN(derivedPrice)
 }
@@ -116,7 +126,6 @@ async function priceOfToken(ctx) {
                 ctx.body = (await getPrice(tokenAddress)).toString()
         } catch (e) {
             ctx.body = e.toString()
-            return
         }
     }
 }
@@ -138,7 +147,6 @@ async function derivedPriceOfToken(ctx) {
                 ctx.body = (await getDerivedPrice(tokenAddress)).toString()
         } catch (e) {
             ctx.body = e.toString()
-            return
         }
     }
 }

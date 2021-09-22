@@ -99,33 +99,44 @@ async function getPairAddress(tokenAddress) {
 }
 
 async function priceOfToken(ctx) {
+    let tokenAddress;
     if (!("tokenAddress" in ctx.params))
         ctx.body = ""
     else {
+        const tokenList = require('../../../loopedEvents/tokenList.json')
         try {
-            const tokenAddress = web3.utils.toChecksumAddress(ctx.params.tokenAddress)
-
-            tokenAddress === wavaxTokenAddress ?
-                ctx.body = (await getAvaxPrice()).toString() :
-                ctx.body = (await getPrice(tokenAddress)).toString()
+            if (ctx.params.tokenAddress in tokenList) {
+                tokenAddress = tokenList[ctx.params.tokenAddress]
+            } else {
+                tokenAddress = web3.utils.toChecksumAddress(ctx.params.tokenAddress)
+            }
         } catch (e) {
             ctx.body = e.toString()
         }
+        tokenAddress === wavaxTokenAddress ?
+            ctx.body = (await getAvaxPrice()).toString() :
+            ctx.body = (await getPrice(tokenAddress)).toString()
     }
 }
 
 async function derivedPriceOfToken(ctx) {
+    let tokenAddress;
     if (!("tokenAddress" in ctx.params))
         ctx.body = ""
     else {
+        const tokenList = require('../../../loopedEvents/tokenList.json')
         try {
-            const tokenAddress = web3.utils.toChecksumAddress(ctx.params.tokenAddress)
-            tokenAddress === wavaxTokenAddress ?
-                ctx.body = E18.toString() :
-                ctx.body = (await getDerivedPrice(tokenAddress)).toString()
+            if (ctx.params.tokenAddress in tokenList) {
+                tokenAddress = tokenList[ctx.params.tokenAddress]
+            } else {
+                tokenAddress = web3.utils.toChecksumAddress(ctx.params.tokenAddress)
+            }
         } catch (e) {
             ctx.body = e.toString()
         }
+        tokenAddress === wavaxTokenAddress ?
+            ctx.body = E18.toString() :
+            ctx.body = (await getDerivedPrice(tokenAddress)).toString()
     }
 }
 

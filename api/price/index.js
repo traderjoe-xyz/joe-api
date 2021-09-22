@@ -76,9 +76,14 @@ async function getPrice(tokenAddress) {
 }
 
 async function getDerivedPrice(tokenAddress) {
-    const pairAddress = await getPairAddress(tokenAddress)
-    const tokenContract = getContractAsERC20(tokenAddress)
-    const derivedPrice = await getDerivedPriceOfPair(wavaxContract, tokenContract, pairAddress, false)
+    const results = await Promise.all([
+        getContractAsERC20(tokenAddress),
+        await getPairAddress(tokenAddress)
+
+    ])
+    if (results[1] === "0x0000000000000000000000000000000000000000")
+        throw 'Error: Given address "' + tokenAddress + '" isn\'t paired with WAVAX on TraderJoe.'
+    const derivedPrice = await getDerivedPriceOfPair(wavaxContract, results[0], results[1], false)
     return new BN(derivedPrice)
 }
 
@@ -97,8 +102,12 @@ async function priceOfToken(ctx) {
     if (!("tokenAddress" in ctx.params))
         ctx.body = ""
     else {
-        const tokenAddress = web3.utils.toChecksumAddress(ctx.params.tokenAddress)
-        ctx.body = (await getPrice(tokenAddress)).toString()
+        try {
+            const tokenAddress = web3.utils.toChecksumAddress(ctx.params.tokenAddress)
+            ctx.body = (await getPrice(tokenAddress)).toString()
+        } catch (e) {
+            ctx.body = e.toString()
+        }
     }
 }
 
@@ -106,8 +115,12 @@ async function derivedPriceOfToken(ctx) {
     if (!("tokenAddress" in ctx.params))
         ctx.body = ""
     else {
-        const tokenAddress = web3.utils.toChecksumAddress(ctx.params.tokenAddress)
-        ctx.body = (await getDerivedPrice(tokenAddress)).toString()
+        try {
+            const tokenAddress = web3.utils.toChecksumAddress(ctx.params.tokenAddress)
+            ctx.body = (await getDerivedPrice(tokenAddress)).toString()
+        } catch (e) {
+            ctx.body = e.toString()
+        }
     }
 }
 

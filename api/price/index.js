@@ -3,6 +3,7 @@ const {web3Factory} = require("../../utils/web3");
 const {AVAX_CHAIN_ID} = require("../../constants");
 const web3 = web3Factory(AVAX_CHAIN_ID);
 const BN = require('bn.js');
+const tokenList = require('../../utils/tokenList.json')
 
 // abis
 const ERC20ContractABI = require('../../abis/ERC20ContractABI.json');
@@ -99,33 +100,42 @@ async function getPairAddress(tokenAddress) {
 }
 
 async function priceOfToken(ctx) {
+    let tokenAddress;
     if (!("tokenAddress" in ctx.params))
         ctx.body = ""
     else {
         try {
-            const tokenAddress = web3.utils.toChecksumAddress(ctx.params.tokenAddress)
-
-            tokenAddress === wavaxTokenAddress ?
-                ctx.body = (await getAvaxPrice()).toString() :
-                ctx.body = (await getPrice(tokenAddress)).toString()
+            if (ctx.params.tokenAddress in tokenList) {
+                tokenAddress = tokenList[ctx.params.tokenAddress]
+            } else {
+                tokenAddress = web3.utils.toChecksumAddress(ctx.params.tokenAddress)
+            }
         } catch (e) {
             ctx.body = e.toString()
         }
+        tokenAddress === wavaxTokenAddress ?
+            ctx.body = (await getAvaxPrice()).toString() :
+            ctx.body = (await getPrice(tokenAddress)).toString()
     }
 }
 
 async function derivedPriceOfToken(ctx) {
+    let tokenAddress;
     if (!("tokenAddress" in ctx.params))
         ctx.body = ""
     else {
         try {
-            const tokenAddress = web3.utils.toChecksumAddress(ctx.params.tokenAddress)
-            tokenAddress === wavaxTokenAddress ?
-                ctx.body = E18.toString() :
-                ctx.body = (await getDerivedPrice(tokenAddress)).toString()
+            if (ctx.params.tokenAddress in tokenList) {
+                tokenAddress = tokenList[ctx.params.tokenAddress]
+            } else {
+                tokenAddress = web3.utils.toChecksumAddress(ctx.params.tokenAddress)
+            }
         } catch (e) {
             ctx.body = e.toString()
         }
+        tokenAddress === wavaxTokenAddress ?
+            ctx.body = E18.toString() :
+            ctx.body = (await getDerivedPrice(tokenAddress)).toString()
     }
 }
 

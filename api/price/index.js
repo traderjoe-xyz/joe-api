@@ -45,7 +45,7 @@ class Cache {
         if (tokenAddress in this.pair) {
             return this.pair[tokenAddress]
         }
-        console.log("getPair", tokenAddress)
+
         const pairAddress = await getPairAddress(tokenAddress)
 
         if (pairAddress === zeroAddress) {
@@ -60,7 +60,7 @@ class Cache {
         if (tokenAddress in this.decimals) {
             return this.decimals[tokenAddress]
         }
-        console.log("getDecimals", tokenAddress)
+
         const decimals = await this.getContract(tokenAddress).methods.decimals().call()
 
         this.decimals[tokenAddress] = decimals
@@ -71,7 +71,7 @@ class Cache {
         if (tokenAddress in this.contract) {
             return this.contract[tokenAddress]
         }
-        console.log("getContract", tokenAddress)
+
         const tokenContract = getContractAsERC20(tokenAddress)
         this.contract[tokenAddress] = tokenContract
         return tokenContract
@@ -83,7 +83,7 @@ class Cache {
                 return this.cachedPrice[wavaxTokenAddress].lastResult
             }
         }
-        console.log("getAvaxPrice")
+
         const reservesUSDCE = await getReserves(wavaxTokenAddress, usdceTokenAddress, wavaxUsdcePair)
         const reservesUSDTE = await getReserves(wavaxTokenAddress, usdteTokenAddress, wavaxUsdtePair)
 
@@ -103,7 +103,6 @@ class Cache {
         if (!(tokenAddress in this.cachedPrice) ||
             this.cachedPrice[tokenAddress].lastRequestTimestamp + this.minElapsedTimeInMs < Date.now() // check if price needs to be updated
         ) {
-            console.log("getPrice", tokenAddress, derived)
             const pairAddress = await cache.getPair(tokenAddress)
 
             if (pairAddress === zeroAddress) {
@@ -175,8 +174,6 @@ async function logics(ctx, derived) {
             } else {
                 tokenAddress = web3.utils.toChecksumAddress(ctx.params.tokenAddress)
             }
-
-            console.log("logics", tokenAddress)
 
             derived ?
                 tokenAddress === wavaxTokenAddress ?

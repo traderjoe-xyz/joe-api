@@ -24,7 +24,6 @@ class Cache {
         if (!this.cachedTotalSupply ||
             this.cachedTotalSupply.lastRequestTimestamp + this.minElapsedTimeInMs < Date.now() // check if supply needs to be updated
         ) {
-            console.log("getTotalSupply")
             const totalSupply = new BN(await joeContract.methods.totalSupply().call());
             const lastRequestTimestamp = Date.now();
             this.cachedTotalSupply = {totalSupply, lastRequestTimestamp}
@@ -35,7 +34,6 @@ class Cache {
 
     async getMaxSupply() {
         if (!this.cachedMaxSupply) {
-            console.log("getMaxSupply")
             const maxSupply = new BN(await joeContract.methods.maxSupply().call());
             const lastRequestTimestamp = Date.now();
             this.cachedMaxSupply = {maxSupply, lastRequestTimestamp}
@@ -47,7 +45,6 @@ class Cache {
         if (!this.cachedCirculatingSupply ||
             this.cachedCirculatingSupply.lastRequestTimestamp + this.minElapsedTimeInMs < Date.now() // check if supply needs to be updated
         ) {
-            console.log("getCirculatingSupply")
             const developmentFunds = new BN(await getBalanceOf("0xaFF90532E2937fF290009521e7e120ed062d4F34"));
             const foundationFunds = new BN(await getBalanceOf("0x66Fb02746d72bC640643FdBa3aEFE9C126f0AA4f"));
             const strategicInvestorFunds = new BN(await getBalanceOf("0xc13B1C927565C5AF8fcaF9eF7387172c447f6796"));

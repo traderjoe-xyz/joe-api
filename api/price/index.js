@@ -84,11 +84,13 @@ class Cache {
             }
         }
 
-        const reservesUSDCE = await getReserves(wavaxTokenAddress, usdceTokenAddress, wavaxUsdcePair)
-        const reservesUSDTE = await getReserves(wavaxTokenAddress, usdteTokenAddress, wavaxUsdtePair)
+        const result = await Promise.all([
+            getReserves(wavaxTokenAddress, usdceTokenAddress, wavaxUsdcePair),
+            getReserves(wavaxTokenAddress, usdteTokenAddress, wavaxUsdtePair)
+        ])
 
-        const priceUSDCE = reservesUSDCE.reserveToken1.mul(E18).div(reservesUSDCE.reserveToken0)
-        const priceUSDTE = reservesUSDTE.reserveToken1.mul(E18).div(reservesUSDTE.reserveToken0)
+        const priceUSDCE = result[0].reserveToken1.mul(E18).div(result[0].reserveToken0)
+        const priceUSDTE = result[1].reserveToken1.mul(E18).div(result[1].reserveToken0)
 
         const avaxPrice = priceUSDCE.add(priceUSDTE).div(TWO)
 
@@ -109,18 +111,28 @@ class Cache {
                 throw 'Error: Given address "' + tokenAddress + '" isn\'t paired with WAVAX on TraderJoe.'
             }
 
-            const reserves = await getReserves(wavaxTokenAddress, tokenAddress, pairAddress)
-
-            const price = reserves.reserveToken0.mul(E18).div(reserves.reserveToken1)
+            const reserves = derived ?
+                await Promise.all([
+                    getReserves(wavaxTokenAddress, tokenAddress, pairAddress)
+                ]) : await Promise.all([
+                    getReserves(wavaxTokenAddress, tokenAddress, pairAddress),
+                    this.getAvaxPrice()
+                ])
+            const price = reserves[0].reserveToken0.mul(E18).div(reserves[0].reserveToken1)
 
             const lastRequestTimestamp = Date.now()
             const lastResult = price
             this.cachedPrice[tokenAddress] = {lastRequestTimestamp, lastResult}
+        } else if (!(wavaxTokenAddress in this.cachedPrice) ||
+            this.cachedPrice[wavaxTokenAddress].lastRequestTimestamp + this.minElapsedTimeInMs < Date.now()) // check if price needs to be updated)
+        {
+            await this.getAvaxPrice()
         }
+
 
         return derived ?
             this.cachedPrice[tokenAddress].lastResult :
-            (await this.getAvaxPrice()).mul(this.cachedPrice[tokenAddress].lastResult).div(E18)
+            this.cachedPrice[wavaxTokenAddress].lastResult.mul(this.cachedPrice[tokenAddress].lastResult).div(E18)
     }
 }
 
@@ -129,14 +141,15 @@ function getContractAsERC20(tokenAddress) {
 }
 
 async function getReserves(token0Address, token1Address, pairAddress) {
-    const balanceToken0 = await cache.getContract(token0Address).methods.balanceOf(pairAddress).call()
-    const balanceToken1 = await cache.getContract(token1Address).methods.balanceOf(pairAddress).call()
+    const results = await Promise.all([
+        cache.getDecimals(token0Address),
+        cache.getDecimals(token1Address),
+        cache.getContract(token0Address).methods.balanceOf(pairAddress).call(),
+        cache.getContract(token1Address).methods.balanceOf(pairAddress).call()
+    ])
+    const reserveToken0 = new BN(results[2]).mul(get10PowN(EIGHTEEN.sub(new BN(results[0]))))
+    const reserveToken1 = new BN(results[3]).mul(get10PowN(EIGHTEEN.sub(new BN(results[1]))))
 
-    const decimalsToken0 = await cache.getDecimals(token0Address)
-    const decimalsToken1 = await cache.getDecimals(token1Address)
-
-    const reserveToken0 = new BN(balanceToken0).mul(get10PowN(EIGHTEEN.sub(new BN(decimalsToken0))))
-    const reserveToken1 = new BN(balanceToken1).mul(get10PowN(EIGHTEEN.sub(new BN(decimalsToken1))))
     return {reserveToken0, reserveToken1}
 }
 

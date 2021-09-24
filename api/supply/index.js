@@ -45,10 +45,14 @@ class Cache {
         if (!this.cachedCirculatingSupply ||
             this.cachedCirculatingSupply.lastRequestTimestamp + this.minElapsedTimeInMs < Date.now() // check if supply needs to be updated
         ) {
-            const developmentFunds = new BN(await getBalanceOf("0xaFF90532E2937fF290009521e7e120ed062d4F34"));
-            const foundationFunds = new BN(await getBalanceOf("0x66Fb02746d72bC640643FdBa3aEFE9C126f0AA4f"));
-            const strategicInvestorFunds = new BN(await getBalanceOf("0xc13B1C927565C5AF8fcaF9eF7387172c447f6796"));
-            const circulatingSupply = (await this.getTotalSupply()).sub(developmentFunds).sub(foundationFunds).sub(strategicInvestorFunds);
+            const results = await Promise.all([
+                this.getTotalSupply(),
+                getBalanceOf("0xaFF90532E2937fF290009521e7e120ed062d4F34"),
+                getBalanceOf("0x66Fb02746d72bC640643FdBa3aEFE9C126f0AA4f"),
+                getBalanceOf("0xc13B1C927565C5AF8fcaF9eF7387172c447f6796")
+            ])
+
+            const circulatingSupply = new BN(results[0]).sub(new BN(results[1])).sub(new BN(results[2])).sub(new BN(results[3]))
 
             const lastRequestTimestamp = Date.now();
             this.cachedCirculatingSupply = {circulatingSupply, lastRequestTimestamp}

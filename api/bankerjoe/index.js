@@ -17,26 +17,22 @@ class Cache {
     }
 
     async reloadTotal() {
-        const result = await TotalSupplyAndBorrow.methods.getTotalSupplyAndTotalBorrow().call();
-        const lastRequestTimestamp = Date.now();
-        this.cachedTotal = {supply: result[0], borrow: result[1], lastRequestTimestamp}
-    }
-
-    async getTotalSupply() {
         if (!this.cachedTotal ||
             this.cachedTotal.lastRequestTimestamp + this.minElapsedTimeInMs < Date.now() // check if supply needs to be updated
         ) {
-            await this.reloadTotal();
+            const result = await TotalSupplyAndBorrow.methods.getTotalSupplyAndTotalBorrow().call();
+            const lastRequestTimestamp = Date.now();
+            this.cachedTotal = {supply: result[0], borrow: result[1], lastRequestTimestamp}
         }
+    }
+
+    async getTotalSupply() {
+        await this.reloadTotal()
         return this.cachedTotal.supply
     }
 
     async getTotalBorrow() {
-        if (!this.cachedTotal ||
-            this.cachedTotal.lastRequestTimestamp + this.minElapsedTimeInMs < Date.now() // check if supply needs to be updated
-        ) {
-            await this.reloadTotal();
-        }
+        await this.reloadTotal()
         return this.cachedTotal.borrow
     }
 }

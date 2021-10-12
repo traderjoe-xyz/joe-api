@@ -7,7 +7,7 @@ const noop = require('./api/noop');
 const supply = require('./api/supply');
 const nftHat = require('./api/nft/hat');
 const price = require('./api/price');
-const bankerJoe = require('./api/bankerJoe');
+const bankerJoe = require('./api/bankerjoe');
 
 router.get('/supply/circulating', supply.circulatingSupply);
 router.get('/supply/total', supply.totalSupply);

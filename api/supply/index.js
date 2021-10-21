@@ -2,7 +2,7 @@
 
 const {web3Factory} = require("../../utils/web3");
 const JoeContractABI = require('../../abis/JoeTokenContractABI.json');
-const {AVAX_CHAIN_ID} = require("../../constants");
+const {_1E18, AVAX_CHAIN_ID} = require("../../constants");
 const joeTokenAddress = "0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd"
 const BN = require('bn.js');
 
@@ -69,6 +69,10 @@ async function circulatingSupply(ctx) {
     ctx.body = (await cache.getCirculatingSupply()).toString();
 }
 
+async function circulatingSupplyAdjusted(ctx) {
+    ctx.body = ((await cache.getCirculatingSupply()).div(_1E18)).toString();
+}
+
 async function maxSupply(ctx) {
     ctx.body = (await cache.getMaxSupply()).toString();
 }
@@ -79,4 +83,4 @@ async function totalSupply(ctx) {
 }
 
 const cache = new Cache()
-module.exports = {circulatingSupply, totalSupply, maxSupply};
+module.exports = {circulatingSupply, circulatingSupplyAdjusted, totalSupply, maxSupply};

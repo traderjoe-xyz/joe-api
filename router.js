@@ -10,6 +10,7 @@ const price = require('./api/price');
 const bankerJoe = require('./api/bankerjoe');
 
 router.get('/supply/circulating', supply.circulatingSupply);
+router.get('/supply/circulating-adjusted', supply.circulatingSupplyAdjusted);
 router.get('/supply/total', supply.totalSupply);
 router.get('/supply/max', supply.maxSupply);
 router.get('/nft/hat', nftHat.infos);

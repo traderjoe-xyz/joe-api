@@ -1,7 +1,6 @@
 const BN = require("bn.js");
 
 // Config/setup
-const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:3000";
 const AVAX_RPC =
   process.env.AVAX_RPC || "https://api.avax.network/ext/bc/C/rpc";
 const AVAX_CHAIN_ID = 43114;
@@ -34,10 +33,8 @@ const BURN_ADDRESS = "0x000000000000000000000000000000000000dEaD";
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 module.exports = {
-  API_BASE_URL,
   AVAX_RPC,
   AVAX_CHAIN_ID,
-  AVAX_VAULTS_ENDPOINT,
   BN_1E18,
   BN_18,
   BN_2,
@@ -45,6 +42,7 @@ module.exports = {
   JOE_ADDRESS,
   JOEFACTORY_ADDRESS,
   TEAM_TREASURY_WALLETS,
+  TOTALSUPPLYANDBORROW_ADDRESS,
   USDC_ADDRESS,
   USDT_ADDRESS,
   WAVAX_ADDRESS,

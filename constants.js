@@ -1,20 +1,54 @@
 const BN = require("bn.js");
-const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:3000';
 
-const AVAX_RPC = process.env.AVAX_RPC || 'https://api.avax.network/ext/bc/C/rpc';
+// Config/setup
+const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:3000";
+const AVAX_RPC =
+  process.env.AVAX_RPC || "https://api.avax.network/ext/bc/C/rpc";
 const AVAX_CHAIN_ID = 43114;
 
+// Number contants
+const BN_1E18 = new BN("1000000000000000000");
+const BN_18 = new BN("18");
+const BN_2 = new BN("2");
 
-const AVAX_VAULTS_ENDPOINT =
-  'https://raw.githubusercontent.com/traderjoe-xyz/beefy-app/prod/src/features/configure/vault/avalanche_pools.js';
+// Addresses
+const JOE_ADDRESS = "0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd";
+const JOEFACTORY_ADDRESS = "0x9Ad6C38BE94206cA50bb0d90783181662f0Cfa10";
+const WAVAX_ADDRESS = "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7";
+const USDC_ADDRESS = "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664";
+const USDT_ADDRESS = "0xc7198437980c041c805A1EDcbA50c1Ce5db95118";
+const WAVAX_USDT_ADDRESS = "0xeD8CBD9F0cE3C6986b22002F03c6475CEb7a6256";
+const WAVAX_USDC_ADDRESS = "0xA389f9430876455C36478DeEa9769B7Ca4E3DDB1";
+const TOTALSUPPLYANDBORROW_ADDRESS =
+  "0x40ae0810EB5148c23Bd0F574DF2Dc4dFD6A81c10";
 
-const _1E18 = new BN("1000000000000000000");
+const TEAM_TREASURY_WALLETS = [
+  "0xaFF90532E2937fF290009521e7e120ed062d4F34", // Team cliff contract
+  "0xc13B1C927565C5AF8fcaF9eF7387172c447f6796", // Investor cliff contract
+  "0x66Fb02746d72bC640643FdBa3aEFE9C126f0AA4f", // Treasury wallet
+  "0x15f08E8656FA6205B53819e36dCBeC8f481Da14C", // Team wallet 1
+  "0x5D3e4C0FE11e0aE4c32F0FF74B4544C49538AC61", // Team wallet 2
+];
+
+const BURN_ADDRESS = "0x000000000000000000000000000000000000dEaD";
+const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 module.exports = {
   API_BASE_URL,
-  _1E18,
-
   AVAX_RPC,
   AVAX_CHAIN_ID,
-  AVAX_VAULTS_ENDPOINT
+  AVAX_VAULTS_ENDPOINT,
+  BN_1E18,
+  BN_18,
+  BN_2,
+  BURN_ADDRESS,
+  JOE_ADDRESS,
+  JOEFACTORY_ADDRESS,
+  TEAM_TREASURY_WALLETS,
+  USDC_ADDRESS,
+  USDT_ADDRESS,
+  WAVAX_ADDRESS,
+  WAVAX_USDC_ADDRESS,
+  WAVAX_USDT_ADDRESS,
+  ZERO_ADDRESS,
 };

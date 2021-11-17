@@ -10,7 +10,7 @@ const {
   WAVAX_ADDRESS,
   WAVAX_USDC_ADDRESS,
   WAVAX_USDT_ADDRESS,
-  ZERO_ADDRESS,
+  ZERO_ADDRESS, JOE_ADDRESS, XJOE_ADDRESS,
 } = require("../../constants");
 const { web3Factory } = require("../../utils/web3");
 const BN = require("bn.js");
@@ -19,6 +19,7 @@ const web3 = web3Factory(AVAX_CHAIN_ID);
 
 // abis
 const ERC20ContractABI = require("../../abis/ERC20ContractABI.json");
+const JoeBarContractABI = require("../../abis/JoeBarContractABI.json");
 const JoeFactoryContractABI = require("../../abis/JoeFactoryContractABI.json");
 
 // contracts
@@ -73,6 +74,27 @@ class Cache {
     const tokenContract = getContractAsERC20(tokenAddress);
     this.contract[tokenAddress] = tokenContract;
     return tokenContract;
+  }
+
+  async getXJoePrice(derived) {
+    if (!(XJOE_ADDRESS in this.cachedPrice && this.cachedPrice[XJOE_ADDRESS].lastRequestTimestamp +
+          this.minElapsedTimeInMs > Date.now())) {
+      if (!(XJOE_ADDRESS in this.contract))
+        this.contract[XJOE_ADDRESS] = new web3.eth.Contract(JoeBarContractABI, XJOE_ADDRESS);
+
+      const joeBalance = new BN(await getContractAsERC20(JOE_ADDRESS).methods.balanceOf(XJOE_ADDRESS).call());
+      const totalSupply = new BN(await this.contract[XJOE_ADDRESS].methods.totalSupply().call());
+
+      const ratio = joeBalance.mul(BN_1E18).div(totalSupply);
+
+      const lastRequestTimestamp = Date.now();
+      const lastResult = (await this.getPrice(JOE_ADDRESS, true)).mul(ratio).div(BN_1E18);
+
+      this.cachedPrice[XJOE_ADDRESS] = { lastRequestTimestamp, lastResult };
+    }
+
+    return derived ? this.cachedPrice[XJOE_ADDRESS].lastResult :
+        this.cachedPrice[XJOE_ADDRESS].lastResult.mul(await this.getAvaxPrice()).div(BN_1E18)
   }
 
   async getAvaxPrice() {
@@ -185,6 +207,9 @@ function get10PowN(n) {
 async function getPrice(tokenAddress, derived) {
   if (tokenAddress === WAVAX_ADDRESS) {
     return await cache.getAvaxPrice();
+  }
+  if (tokenAddress === XJOE_ADDRESS) {
+    return await cache.getXJoePrice(derived);
   }
 
   return await cache.getPrice(tokenAddress, derived);

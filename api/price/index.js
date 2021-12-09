@@ -30,9 +30,6 @@ const joefactory_contract = new web3.eth.Contract(
   JOEFACTORY_ADDRESS
 );
 
-// logging
-// const log = require("loglevel");
-
 class Cache {
   minElapsedTimeInMs = 60000; // 60 seconds
 

@@ -498,6 +498,11 @@ bytes@3.1.0:
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-3.1.0.tgz#f6cf7933a360e0588fa9fde85651cdc7f805d1f6"
   integrity sha512-zauLjrfCG+xvoyaqLoV8bLVXXNGC4JqlxFCutSDWA6fJrTo2ZuvLYTqZ7aHBLZSMOopbzwv8f+wZcVzfVTI2Dg==
 
+bytes@^3.1.0:
+  version "3.1.1"
+  resolved "https://artifactory.tools.roku.com/artifactory/api/npm/roku/bytes/-/bytes-3.1.1.tgz#3f018291cb4cbad9accb6e6970bca9c8889e879a"
+  integrity sha1-PwGCkctMutmsy25pcLypyIieh5o=
+
 cache-content-type@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/cache-content-type/-/cache-content-type-1.0.1.tgz#035cde2b08ee2129f4a8315ea8f00a00dba1453c"
@@ -532,7 +537,7 @@ caseless@~0.12.0:
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
 
-chalk@^2.3.2:
+chalk@^2.4.2:
   version "2.4.2"
   resolved "https://artifactory.tools.roku.com/artifactory/api/npm/roku/chalk/-/chalk-2.4.2.tgz#cd42541677a54333cf541a49108c1432b44c9424"
   integrity sha1-zUJUFnelQzPPVBpJEIwUMrRMlCQ=
@@ -1425,6 +1430,11 @@ http-signature@~1.2.0:
     jsprim "^1.2.2"
     sshpk "^1.7.0"
 
+humanize-number@0.0.2:
+  version "0.0.2"
+  resolved "https://artifactory.tools.roku.com/artifactory/api/npm/roku/humanize-number/-/humanize-number-0.0.2.tgz#11c0af6a471643633588588048f1799541489c18"
+  integrity sha1-EcCvakcWQ2M1iFiASPF5lUFInBg=
+
 iconv-lite@0.4.24:
   version "0.4.24"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.24.tgz#2022b4b25fbddc21d2f524974a474aafe733908b"
@@ -1735,14 +1745,15 @@ koa-helmet@^6.1.0:
   dependencies:
     helmet "^4.4.1"
 
-koa-logger-middleware@^1.0.0:
-  version "1.0.0"
-  resolved "https://artifactory.tools.roku.com/artifactory/api/npm/roku/koa-logger-middleware/-/koa-logger-middleware-1.0.0.tgz#16705fdba79ea2a630165875501958d20bea2a46"
-  integrity sha1-FnBf26eeoqYwFlh1UBlY0gvqKkY=
+koa-logger@^3.2.1:
+  version "3.2.1"
+  resolved "https://artifactory.tools.roku.com/artifactory/api/npm/roku/koa-logger/-/koa-logger-3.2.1.tgz#ab9db879526db3837cc9ce4fd983c025b1689f22"
+  integrity sha1-q524eVJts4N8yc5P2YPAJbFonyI=
   dependencies:
-    chalk "^2.3.2"
-    moment "^2.21.0"
-    uuid "^3.2.1"
+    bytes "^3.1.0"
+    chalk "^2.4.2"
+    humanize-number "0.0.2"
+    passthrough-counter "^1.0.0"
 
 koa-router@^10.1.1:
   version "10.1.1"
@@ -1908,11 +1919,6 @@ mock-fs@^4.1.0:
   version "4.14.0"
   resolved "https://registry.yarnpkg.com/mock-fs/-/mock-fs-4.14.0.tgz#ce5124d2c601421255985e6e94da80a7357b1b18"
   integrity sha512-qYvlv/exQ4+svI3UOvPUpLDF0OMX5euvUH0Ny4N5QyRyhNdgAgUrVH3iUINSzEPLvx0kbo/Bp28GJKIqvE7URw==
-
-moment@^2.21.0:
-  version "2.29.1"
-  resolved "https://artifactory.tools.roku.com/artifactory/api/npm/roku/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
-  integrity sha1-sr52n6MZQL6e7qZGnAdeNQBvo9M=
 
 ms@2.0.0:
   version "2.0.0"
@@ -2105,6 +2111,11 @@ parseurl@^1.3.2, parseurl@~1.3.3:
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/parseurl/-/parseurl-1.3.3.tgz#9da19e7bee8d12dff0513ed5b76957793bc2e8d4"
   integrity sha512-CiyeOxFT/JZyN5m0z9PfXw4SCBJ6Sygz1Dpl0wqjlhDEGGBP1GnsUVEL0p63hoG1fcj3fHynXi9NYO4nWOL+qQ==
+
+passthrough-counter@^1.0.0:
+  version "1.0.0"
+  resolved "https://artifactory.tools.roku.com/artifactory/api/npm/roku/passthrough-counter/-/passthrough-counter-1.0.0.tgz#1967d9e66da572b5c023c787db112a387ab166fa"
+  integrity sha1-GWfZ5m2lcrXAI8eH2xEqOHqxZvo=
 
 path-to-regexp@0.1.7:
   version "0.1.7"
@@ -2685,7 +2696,7 @@ uuid@3.3.2:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.2.tgz#1b4af4955eb3077c501c23872fc6513811587131"
   integrity sha512-yXJmeNaw3DnnKAOKJE51sL/ZaYfWJRl1pK9dr19YFCu0ObS231AB1/LbqTKRAQ5kw8A90rA6fr4riOUpTZvQZA==
 
-uuid@^3.2.1, uuid@^3.3.2:
+uuid@^3.3.2:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==

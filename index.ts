@@ -10,7 +10,7 @@ const etag = require("koa-etag");
 const rt = require("./middleware/rt");
 const powered = require("./middleware/powered");
 const router = require("./router");
-const logger = require("koa-logger-middleware");
+const logger = require("koa-logger");
 
 const index = new Koa();
 const is_dev = process.env.NODE_ENV === "dev";

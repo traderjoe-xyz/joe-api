@@ -290,5 +290,40 @@ async function derivedPriceOfToken(ctx) {
   await logics(ctx, true);
 }
 
+async function priceOfTokenPair(ctx) {
+  console.info("priceOfTokenPair");
+  if (!("tokenAddressPair" in ctx.params)) {
+    ctx.body = "";
+    return;
+  }
+  console.info(ctx.params);
+  const [tokenA, tokenB] = ctx.params.tokenAddressPair.split("-");
+  console.info("token pair", tokenA, tokenB);
+  console.info(tokenList[tokenA], tokenList[tokenB]);
+  if (!tokenA || !tokenB) {
+    ctx.body =
+      "Invalid token pair, please pass as token1-token2 eg: 'price/usd-avax'";
+    ctx.status = 400;
+  } else if (tokenA in tokenList && tokenB in tokenList) {
+    const tokenAddressA = tokenList[tokenA];
+    const tokenAddressB = tokenList[tokenB];
+    console.info("token pair", tokenAddressA, tokenAddressB);
+    const derived = (address) => address === WAVAX_ADDRESS;
+    console.info("derived", derived);
+    const priceA = await getPrice(tokenAddressA, derived(tokenAddressA));
+    const priceB = await getPrice(tokenAddressB, derived(tokenAddressB));
+    console.info("priceA", priceA.toString());
+    console.info("priceB", priceB.toString());
+    // divide a by b
+    priceB.toString() / priceA.toString() === "NaN";
+    console.log(priceA.div(priceB).toString());
+    ctx.body = priceA.toString() / priceB.toString();
+    // ctx.body = priceA.div(BN_1E18).div(priceB.div(BN_1E18)).toString();
+  } else {
+    ctx.body = "Token pair not found";
+    ctx.status = 404;
+  }
+}
+
 const cache = new Cache();
-module.exports = { priceOfToken, derivedPriceOfToken };
+module.exports = { priceOfToken, derivedPriceOfToken, priceOfTokenPair };

@@ -6,13 +6,19 @@ const {
   BURN_ADDRESS,
   JOE_ADDRESS,
   TEAM_TREASURY_WALLETS,
+  LOCKING_WRAPPER_ADDRESS,
 } = require("../../constants");
 const { web3Factory } = require("../../utils/web3");
 const BN = require("bn.js");
 const JoeContractABI = require("../../abis/JoeTokenContractABI.json");
+const LockingWrapperABI = require("../../abis/LockingWrapperABI.json");
 
 const web3 = web3Factory(AVAX_CHAIN_ID);
 const joeContract = new web3.eth.Contract(JoeContractABI, JOE_ADDRESS);
+const lockingWrapperContract = new web3.eth.Contract(
+  LockingWrapperABI,
+  LOCKING_WRAPPER_ADDRESS
+);
 
 class Cache {
   minElapsedTimeInMs = 10000; // 10 seconds
@@ -62,6 +68,7 @@ class Cache {
         this.getTotalSupply(),
         ...teamTreasuryBalances,
         getBalanceOf(BURN_ADDRESS),
+        lockingBalance(),
       ]);
 
       let circulatingSupply = new BN(results[0]);
@@ -77,6 +84,10 @@ class Cache {
     }
     return this.cachedCirculatingSupply.circulatingSupply;
   }
+}
+
+async function lockingBalance() {
+  return await lockingWrapperContract.methods.balanceOf().call();
 }
 
 async function getBalanceOf(address) {

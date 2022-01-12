@@ -67,7 +67,6 @@ class Cache {
       const results = await Promise.all([
         this.getTotalSupply(),
         ...teamTreasuryBalances,
-        getBalanceOf(BURN_ADDRESS),
         lockingBalance(),
       ]);
 

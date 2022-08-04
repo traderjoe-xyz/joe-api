@@ -13,5 +13,4 @@ COPY constants.js /app/
 COPY index.ts /app/
 COPY router.js /app/
 
-
 CMD ["node", "./index.ts"]

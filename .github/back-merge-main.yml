@@ -1,0 +1,20 @@
+name: Back merge main to fuji
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  back_merge:
+    runs-on: ubuntu-latest
+    name: Back merge main to fuji
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Merge main -> fuji
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          from_branch: main
+          target_branch: fuji
+          github_token: ${{ secrets.GITHUB_TOKEN }}

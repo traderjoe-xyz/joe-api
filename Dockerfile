@@ -1,4 +1,5 @@
-FROM node:18-alpine
+FROM 194943407731.dkr.ecr.eu-west-1.amazonaws.com/node:latest
+# FROM node:18.7.0-alpine3.16
 
 WORKDIR /app
 COPY package.json /app/

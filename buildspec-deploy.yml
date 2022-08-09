@@ -1,0 +1,11 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - REPOSITORY_URI=194943407731.dkr.ecr.eu-west-1.amazonaws.com/joeapi
+      - IMAGE_TAG=${IMAGE_TAG:-$(echo $CODEBUILD_WEBHOOK_TRIGGER | awk -F/ {'print $2'})}
+      - aws eks update-kubeconfig --name $ENVIRONMENT-trader-joe-eks
+  build:
+    commands:
+      - kubectl set image -n $ENVIRONMENT deployment/joeapi joeapi=$REPOSITORY_URI:$IMAGE_TAG

@@ -1,0 +1,20 @@
+name: Back merge staging to dev
+on:
+  push:
+    branches:
+      - 'staging'
+
+jobs:
+  back_merge:
+    runs-on: ubuntu-latest
+    name: Back merge staging to dev
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Merge staging -> dev
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          from_branch: staging
+          target_branch: dev
+          github_token: ${{ secrets.GITHUB_TOKEN }}

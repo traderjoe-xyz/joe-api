@@ -5,16 +5,16 @@ env:
 
 phases:
   pre_build:
+    on-failure: ABORT
     commands:
       - REPOSITORY_URI=194943407731.dkr.ecr.eu-west-1.amazonaws.com/joeapi
       - docker login --username AWS --password $(aws ecr get-login-password --region eu-west-1) $REPOSITORY_URI
   build:
+    on-failure: ABORT
     commands:
       - docker build -t $REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION .
       - docker tag $REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION $REPOSITORY_URI:$ENVIRONMENT-$CODEBUILD_BUILD_NUMBER
       - docker tag $REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION $REPOSITORY_URI:$ENVIRONMENT
-  post_build:
-    commands:
       - docker push $REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION
       - docker push $REPOSITORY_URI:$ENVIRONMENT-$CODEBUILD_BUILD_NUMBER
       - docker push $REPOSITORY_URI:$ENVIRONMENT

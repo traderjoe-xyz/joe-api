@@ -10,7 +10,9 @@ const {
   WAVAX_ADDRESS,
   WAVAX_USDC_ADDRESS,
   WAVAX_USDT_ADDRESS,
-  ZERO_ADDRESS, JOE_ADDRESS, XJOE_ADDRESS,
+  ZERO_ADDRESS,
+  JOE_ADDRESS,
+  XJOE_ADDRESS,
 } = require("../../constants");
 const { web3Factory } = require("../../utils/web3");
 const BN = require("bn.js");
@@ -77,27 +79,49 @@ class Cache {
   }
 
   async getXJoePrice(derived) {
-    if (!(XJOE_ADDRESS in this.cachedPrice && this.cachedPrice[XJOE_ADDRESS].lastRequestTimestamp +
-          this.minElapsedTimeInMs > Date.now())) {
+    console.info("getXJoePrice");
+    if (
+      !(
+        XJOE_ADDRESS in this.cachedPrice &&
+        this.cachedPrice[XJOE_ADDRESS].lastRequestTimestamp +
+          this.minElapsedTimeInMs >
+          Date.now()
+      )
+    ) {
       if (!(XJOE_ADDRESS in this.contract))
-        this.contract[XJOE_ADDRESS] = new web3.eth.Contract(JoeBarContractABI, XJOE_ADDRESS);
+        this.contract[XJOE_ADDRESS] = new web3.eth.Contract(
+          JoeBarContractABI,
+          XJOE_ADDRESS
+        );
 
-      const joeBalance = new BN(await getContractAsERC20(JOE_ADDRESS).methods.balanceOf(XJOE_ADDRESS).call());
-      const totalSupply = new BN(await this.contract[XJOE_ADDRESS].methods.totalSupply().call());
+      const joeBalance = new BN(
+        await getContractAsERC20(JOE_ADDRESS)
+          .methods.balanceOf(XJOE_ADDRESS)
+          .call()
+      );
+      const totalSupply = new BN(
+        await this.contract[XJOE_ADDRESS].methods.totalSupply().call()
+      );
 
       const ratio = joeBalance.mul(BN_1E18).div(totalSupply);
 
       const lastRequestTimestamp = Date.now();
-      const lastResult = (await this.getPrice(JOE_ADDRESS, true)).mul(ratio).div(BN_1E18);
+      const lastResult = (await this.getPrice(JOE_ADDRESS, true))
+        .mul(ratio)
+        .div(BN_1E18);
 
       this.cachedPrice[XJOE_ADDRESS] = { lastRequestTimestamp, lastResult };
     }
 
-    return derived ? this.cachedPrice[XJOE_ADDRESS].lastResult :
-        this.cachedPrice[XJOE_ADDRESS].lastResult.mul(await this.getAvaxPrice()).div(BN_1E18)
+    return derived
+      ? this.cachedPrice[XJOE_ADDRESS].lastResult
+      : this.cachedPrice[XJOE_ADDRESS].lastResult
+          .mul(await this.getAvaxPrice())
+          .div(BN_1E18);
   }
 
   async getAvaxPrice() {
+    console.info("getAvaxPrice");
     if (WAVAX_ADDRESS in this.cachedPrice) {
       if (
         this.cachedPrice[WAVAX_ADDRESS].lastRequestTimestamp +
@@ -228,11 +252,17 @@ async function getPairAddress(tokenAddress) {
 }
 
 async function logics(ctx, derived) {
+  console.info("logics");
   let tokenAddress;
   if (!("tokenAddress" in ctx.params)) ctx.body = "";
   else {
     try {
       if (ctx.params.tokenAddress in tokenList) {
+        console.info(
+          "found in token list",
+          Object.keys(tokenList).slice(0, 5),
+          "..."
+        );
         tokenAddress = tokenList[ctx.params.tokenAddress];
       } else {
         tokenAddress = web3.utils.toChecksumAddress(ctx.params.tokenAddress);

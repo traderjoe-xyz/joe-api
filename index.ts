@@ -10,9 +10,19 @@ const etag = require("koa-etag");
 const rt = require("./middleware/rt");
 const powered = require("./middleware/powered");
 const router = require("./router");
+const logger = require("koa-logger");
 
 const index = new Koa();
+const is_dev = process.env.NODE_ENV === "dev";
 
+if (!is_dev) {
+  console.log("Running in production mode");
+  console.info = () => {};
+  console.debug = () => {};
+  console.warn = () => {};
+}
+
+index.use(logger());
 index.use(rt);
 index.use(conditional());
 index.use(etag());

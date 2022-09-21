@@ -101,6 +101,13 @@ async function circulatingSupplyAdjusted(ctx) {
   ctx.body = (await cache.getCirculatingSupply()).div(BN_1E18).toString();
 }
 
+async function circulatingSupplyAdjustedFloat (ctx) {
+  const supply = await cache.getCirculatingSupply();
+  const supplyInt = supply.div(BN_1E18).toString();
+  const supplyDec = supply.mod(BN_1E18).toString().padStart(18, '0');
+  ctx.body = `${supplyInt}.${supplyDec}`;
+}
+
 async function maxSupply(ctx) {
   ctx.body = (await cache.getMaxSupply()).toString();
 }
@@ -113,6 +120,7 @@ const cache = new Cache();
 module.exports = {
   circulatingSupply,
   circulatingSupplyAdjusted,
+  circulatingSupplyAdjustedFloat,
   totalSupply,
   maxSupply,
 };

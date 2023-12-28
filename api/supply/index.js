@@ -6,6 +6,7 @@ const {
   BURN_ADDRESS,
   JOE_ADDRESS,
   TEAM_TREASURY_WALLETS,
+  MASTER_CHEF_ADDRESS,
   LOCKING_WRAPPER_ADDRESS,
 } = require("../../constants");
 const { web3Factory } = require("../../utils/web3");
@@ -68,6 +69,7 @@ class Cache {
         this.getTotalSupply(),
         ...teamTreasuryBalances,
         lockingBalance(),
+        getBalanceOf(MASTER_CHEF_ADDRESS),
       ]);
 
       let circulatingSupply = new BN(results[0]);

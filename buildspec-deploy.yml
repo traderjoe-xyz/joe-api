@@ -8,7 +8,7 @@ phases:
       - IMAGE_TAG=${IMAGE_TAG:-$(echo $CODEBUILD_WEBHOOK_TRIGGER | awk -F/ {'print $2'})}
       - aws eks update-kubeconfig --name $ENVIRONMENT-trader-joe-eks
       - |
-        for d in $(kubectl get deploy -n $ENVIRONMENT -l app=joepai --no-headers -o custom-columns=_:metadata.name); do
+        for d in $(kubectl get deploy -n $ENVIRONMENT -l app=joeapi --no-headers -o custom-columns=_:metadata.name); do
           kubectl set image -n $ENVIRONMENT deployment/$d $d=$REPOSITORY_URI:$IMAGE_TAG
         done
     finally:
